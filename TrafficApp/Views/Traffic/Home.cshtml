@@ -1,0 +1,32 @@
+﻿@model CalculationInputModel
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="row">
+    <div class="col-md-3">
+        <h2>Route calculation</h2>
+		@using (Html.BeginForm("FindRouteAction", "Traffic"))
+		{
+            <div class="form-group">
+			    @Html.LabelFor(model => model.StartAddress, "Start", new { @class = "control-label col-md-0" })
+			    <div class="col-md-offset-0">
+				    @Html.EditorFor(model => model.StartAddress)
+			    </div>
+		    </div>
+		    <div class="form-group">
+                @Html.LabelFor(model => model.DestinationAddress, "Destination", new { @class = "control-label col-md-0" })
+                <div class="col-md-offset-0">
+                    @Html.EditorFor(model => model.DestinationAddress)
+                </div>
+            </div>
+		    <div class="form-group">
+                @Html.LabelFor(model => model.JourneyDateTime, "Date & Time", new { @class = "control-label col-md-0" })
+                <div class="col-md-offset-0">
+                    @Html.EditorFor(model => model.JourneyDateTime)
+                </div>
+            </div>
+		    <input type="submit" value="Find Route" id="btnFind" />
+		}
+    </div>
+</div>
