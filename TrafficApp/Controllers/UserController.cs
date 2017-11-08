@@ -5,7 +5,7 @@ using TrafficApp.Models;
 
 namespace TrafficApp.Controllers
 {
-    public class LoginController : Controller
+    public class UserController : Controller
     {
         public IActionResult Login() 
         {
@@ -17,7 +17,7 @@ namespace TrafficApp.Controllers
             //var calculationService = new TrafficCalculationService();
             //var user = calculationService.Login(model.Username, model.Password);
 
-            if (model.Username != null && model.Username.Equals("sipe") && model.Password != null && model.Password.Equals("simonpetersen")) {
+            if (model.Username != null && model.Username.Equals("admin") && model.Password != null && model.Password.Equals("1234")) {
                 return RedirectToAction("Home", "Traffic");
             }
 

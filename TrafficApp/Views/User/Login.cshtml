@@ -6,7 +6,7 @@
 <h3>@ViewData["Message"]</h3>
 
 <div class="row">
-    @using (Html.BeginForm("LoginAction", "Login"))
+    @using (Html.BeginForm("LoginAction", "User"))
     {
 	<div class="form-group">
 		@Html.LabelFor(model => model.Username, "Username", new { @class = "control-label col-md-0" })

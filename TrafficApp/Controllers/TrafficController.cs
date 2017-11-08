@@ -31,10 +31,10 @@ namespace TrafficApp.Controllers
             Tuple<double, double> StartCoordinates = nominatimService.GetCoordinates(startAddress).Result;
             Tuple<double, double> DestinationCoordinates = nominatimService.GetCoordinates(destinationAddress).Result;
 
-            if (StartCoordinates == null || destinationAddress == null) {
-                // TODO: View Error message
-            } else {
+            if (StartCoordinates != null || destinationAddress != null) {
                 // TODO: Call TrafficCalculationServive()
+            } else {
+                // TODO: View Error message
             }
 
             return View("Index");

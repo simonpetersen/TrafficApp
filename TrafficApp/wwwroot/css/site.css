@@ -28,7 +28,8 @@
 
 /* Change background color of navbar*/
 .navbar {
-    background-color: #004cff;
+    background-color: #003ea3;
+    color: white;
 }
 
 /* Hide/rearrange for smaller screens */
