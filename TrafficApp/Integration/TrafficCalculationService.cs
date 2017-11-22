@@ -8,14 +8,22 @@ using System.Xml;
 using System.IO;
 using System.Collections;
 using System.Xml.Serialization;
+using Microsoft.Extensions.Configuration;
 
 namespace TrafficApp.Integration
 {
     public class TrafficCalculationService
     {
+        public static IConfigurationRoot Configuration { get; set; }
         public async Task<User> Login(string Username, string Password)
         {
-            string baseUrl = "http://localhost:8080/rs/user/login/";
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json");
+
+            Configuration = builder.Build();
+
+            string baseUrl = Configuration["BaseUrl"] + "user/login/";
 
             using (var client = new HttpClient())
             {
