@@ -18,6 +18,7 @@ namespace TrafficApp.Controllers
             //var user = calculationService.Login(model.Username, model.Password);
 
             if (model.Username != null && model.Username.Equals("admin") && model.Password != null && model.Password.Equals("1234")) {
+                TempData["isAdmin"] = true;
                 return RedirectToAction("Home", "Traffic");
             }
 

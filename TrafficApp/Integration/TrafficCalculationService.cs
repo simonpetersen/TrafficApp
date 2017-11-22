@@ -6,6 +6,8 @@ using TrafficApp.Models;
 using System.Net.Http.Headers;
 using System.Xml;
 using System.IO;
+using System.Collections;
+using System.Xml.Serialization;
 
 namespace TrafficApp.Integration
 {
@@ -40,6 +42,62 @@ namespace TrafficApp.Integration
                     }
 
                     return user;
+                }
+            }
+
+            return null;
+        }
+
+        public async Task<Route> CalculateRoute(double startLat, double startLon, double destLat, double destLon, DateTime date, string apiKey)
+        {
+            string baseUrl = "http://localhost:8080/rs/route/";
+
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(baseUrl);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/xml"));
+
+                var url = startLat + "/" + startLon + "/" + destLat + "/" + destLon + "/" + date.ToString("yyyy-MM-dd HH:mm:ss") 
+                                                                                                + "?apiKey=" + apiKey;
+                
+                HttpResponseMessage Response = await client.GetAsync(url);
+                if (Response.IsSuccessStatusCode)
+                {
+                    var UserResponse = Response.Content.ReadAsStringAsync().Result;
+
+                    XmlReader Reader = XmlReader.Create(new StringReader(UserResponse));
+                    Reader.MoveToContent();
+                    var nodeList = new ArrayList();
+                    Node node = new Node();
+
+                    while (Reader.Read())
+                    {
+                        if (Reader.NodeType == XmlNodeType.Element)
+                        {
+                            if (Reader.Name.Equals("id"))
+                            {
+                                node.NodeId = Reader.ReadElementContentAsInt();
+                            }
+                            else if (Reader.Name.Equals("longitude"))
+                            {
+                                node.Longitude = Reader.ReadElementContentAsDouble();
+                            }
+                        } else if (Reader.NodeType == XmlNodeType.Text) {
+                            node.Latitude = Reader.ReadContentAsDouble();
+                        }
+
+                        if (node.NodeId != 0 && !node.Latitude.Equals(0) && !node.Longitude.Equals(0))
+                        {
+                            nodeList.Add(node);
+                            node = new Node();
+                        }
+                    }
+
+                    var route = new Route();
+                    route.NodeList = nodeList;
+
+                    return route;
                 }
             }
 

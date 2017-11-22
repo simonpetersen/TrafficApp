@@ -10,9 +10,11 @@ namespace TrafficApp.Controllers
 {
     public class TrafficController : Controller
     {
+        public bool IsAdmin { get; set; }
+
         public IActionResult Home()
         {
-            return View();
+            return View("Home", "/Views/User/_LoginLayout");
         }
 
         public IActionResult About()
@@ -23,19 +25,27 @@ namespace TrafficApp.Controllers
         [HttpPost]
         public IActionResult FindRouteAction(CalculationInputModel model)
         {
-            //var calculationService = new TrafficCalculationService();
             var nominatimService = new NominatimGeocodingService();
             var startAddress = model.StartAddress;
             var destinationAddress = model.DestinationAddress;
-
+            /*
             Tuple<double, double> StartCoordinates = nominatimService.GetCoordinates(startAddress).Result;
             Tuple<double, double> DestinationCoordinates = nominatimService.GetCoordinates(destinationAddress).Result;
 
             if (StartCoordinates != null || destinationAddress != null) {
-                // TODO: Call TrafficCalculationServive()
+            */
+                var trafficService = new TrafficCalculationService();
+                // Test: Hardcoded coordinates
+                double startLat = 54.7808636;
+                double startLon = 11.4887596;
+                double destLat = 54.7788018;
+                double destLon = 11.4809834;
+                Route route = trafficService.CalculateRoute(startLat, startLon, destLat, destLon, DateTime.Now, "abcdefg").Result;
+            /*
             } else {
                 // TODO: View Error message
             }
+            */
 
             return View("Index");
         }
