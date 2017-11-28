@@ -32,6 +32,11 @@
     color: white;
 }
 
+#mapid {
+    height: 500px;
+    width: 800px;
+}
+
 /* Hide/rearrange for smaller screens */
 @media screen and (max-width: 767px) {
     /* Hide captions */

@@ -9,6 +9,7 @@ using System.IO;
 using System.Collections;
 using System.Xml.Serialization;
 using Microsoft.Extensions.Configuration;
+using System.Text;
 
 namespace TrafficApp.Integration
 {
@@ -37,17 +38,13 @@ namespace TrafficApp.Integration
                 {
                     var UserResponse = Response.Content.ReadAsStringAsync().Result;
 
-                    XmlReader Reader = XmlReader.Create(new StringReader(UserResponse));
-                    Reader.MoveToContent();
-                    var user = new User();
-                    while (Reader.Read())
-                    {
-                        if (Reader.Name.Equals("admin")) {
-                            user.IsAdmin = Reader.ReadElementContentAsBoolean();
-                        } else if (Reader.Name.Equals("name")) {
-                            user.Name = Reader.ReadElementContentAsString();
-                        }
-                    }
+                    var StringReader = new StringReader(UserResponse);
+                    var xRoot = new XmlRootAttribute();
+                    xRoot.ElementName = "user";
+                    xRoot.IsNullable = true;
+
+                    var Serializer = new XmlSerializer(typeof(User),xRoot);
+                    var user = (User)Serializer.Deserialize(StringReader);
 
                     return user;
                 }
@@ -56,6 +53,7 @@ namespace TrafficApp.Integration
             return null;
         }
 
+        /*
         public async Task<Route> CalculateRoute(double startLat, double startLon, double destLat, double destLon, DateTime date, string apiKey)
         {
             string baseUrl = "http://localhost:8080/rs/route/";
@@ -110,6 +108,59 @@ namespace TrafficApp.Integration
             }
 
             return null;
+        }
+        */
+
+        public async Task<string> CreateUser(string Username, string Password, string Name, string Admin, string apiKey) {
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json");
+
+            Configuration = builder.Build();
+
+            string baseUrl = Configuration["BaseUrl"] + "user/";
+
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(baseUrl);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Add("password", Password);
+                client.DefaultRequestHeaders.Add("name", Name);
+                client.DefaultRequestHeaders.Add("admin", Admin);
+
+                HttpResponseMessage Response = await client.PostAsync(Username + "?apiKey=" + apiKey, new StringContent(Password));
+                if (Response.IsSuccessStatusCode)
+                {
+                    return "User successfully created.";
+                }
+            }
+
+            return "Creation failed.";
+        }
+
+        public async Task<string> DeleteUser(string Username, string ApiKey)
+        {
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json");
+
+            Configuration = builder.Build();
+
+            string baseUrl = Configuration["BaseUrl"] + "user/";
+
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(baseUrl);
+                client.DefaultRequestHeaders.Clear();
+
+                HttpResponseMessage Response = await client.DeleteAsync(Username + "?apiKey=" + ApiKey);
+                if (Response.IsSuccessStatusCode)
+                {
+                    return "User successfully deleted.";
+                }
+            }
+
+            return "Deletion failed.";
         }
 
     }

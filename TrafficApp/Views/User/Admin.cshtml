@@ -1,0 +1,58 @@
+﻿@model UserModel
+@{
+    ViewData["Title"] = "User";
+}
+    
+<div class="row">
+    <div class="col-xs-7 col-sm-6 col-md-5">
+		<h3>Create User</h3>
+        @using (Html.BeginForm("CreateUser", "User"))
+        {
+        <div class="form-group">
+            @Html.LabelFor(model => model.CreateModel.Username, "Username", new { @class = "control-label col-md-0" })
+            <div class="col-md-offset-0">
+                @Html.EditorFor(model => model.CreateModel.Username)
+            </div>
+        </div>
+		<div class="form-group">
+            @Html.LabelFor(model => model.CreateModel.Name, "Name", new { @class = "control-label col-md-0" })
+            <div class="col-md-offset-0">
+                @Html.EditorFor(model => model.CreateModel.Name)
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.CreateModel.Password, "Password", new { @class = "control-label col-md-0" })
+            <div class="col-md-offset-0">
+                @Html.PasswordFor(model => model.CreateModel.Password)
+            </div>
+        </div>
+		<div class="form-group">
+            @Html.LabelFor(model => model.CreateModel.Admin, "Admin", new { @class = "control-label col-md-0" })
+            <div class="col-md-offset-0">
+                @Html.EditorFor(model => model.CreateModel.Admin)
+            </div>
+        </div>
+        <input type="submit" value="Create User" id="btnCreate" />
+        }
+		@if(@Model != null && @Model.CreateMessage != null) {
+            <p>@Model.CreateMessage</p>
+        }
+    </div>
+	<div class="col-xs-7 col-sm-6 col-md-5">
+		<h3>Delete User</h3>
+        @using (Html.BeginForm("DeleteUser", "User"))
+        {
+        <div class="form-group">
+            @Html.LabelFor(model => model.DeleteModel.Username, "Username", new { @class = "control-label col-md-0" })
+            <div class="col-md-offset-0">
+                @Html.EditorFor(model => model.DeleteModel.Username)
+            </div>
+        </div>
+        <input type="submit" value="Delete User" id="btnDelete" />
+        }
+		@if(@Model != null && @Model.DeleteMessage != null) {
+            <p>@Model.DeleteMessage</p>
+		}
+    </div>
+</div>
+

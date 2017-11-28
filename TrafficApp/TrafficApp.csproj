@@ -5,9 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
     <PackageReference Include="System.Net.Http" Version="4.3.3" />
     <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.3" />
+    <PackageReference Include="JSM.MVC4" Version="1.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Session" Version="2.0.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -16,6 +18,8 @@
 
   <ItemGroup>
     <Content Remove="Views\Home\Contact.cshtml" />
+    <Content Remove="Views\User\Login.cshtml" />
+    <Content Remove="wwwroot\js\trafficCalculationService.js" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Integration\" />
@@ -23,5 +27,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Remove="Views\Home\Coordinates.cshtml" />
+    <None Remove="wwwroot\js\trafficCalculationService.js" />
+    <None Remove="Views\User\User.csthml" />
   </ItemGroup>
 </Project>
