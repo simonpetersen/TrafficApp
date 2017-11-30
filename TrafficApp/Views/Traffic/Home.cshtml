@@ -1,5 +1,8 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
+    if ((bool)ViewData["admin"]) {
+        Layout = "_LayoutAdmin";
+    }
 }
 
 <script type="text/javascript">

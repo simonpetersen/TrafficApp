@@ -17,6 +17,15 @@ namespace TrafficApp.Controllers
 
         public IActionResult Admin() 
         {
+            byte[] byteArray;
+            HttpContext.Session.TryGetValue("admin", out byteArray);
+            var admin = byteArray != null ? true : false;
+
+            if (!admin)
+            {
+                return View("Login");
+            }
+
             return View();
         }
 
@@ -35,6 +44,12 @@ namespace TrafficApp.Controllers
         {
             var calculationService = new TrafficCalculationService();
             var deleteModel = model.DeleteModel;
+
+            if (deleteModel.Username.Equals("admin")) 
+            {
+                return View("Admin", new UserModel() { DeleteMessage = "The admin user can't be deleted." });
+            }
+
             var apiKey = GetApiKey();
             var result = await calculationService.DeleteUser(deleteModel.Username, apiKey);
 
@@ -44,18 +59,38 @@ namespace TrafficApp.Controllers
         public async Task<IActionResult> LoginAction(LoginModel model)
         {
             /*
+            if (model.Username == null || model.Password == null || model.Username.Length < 4 || model.Password.Length < 8)
+            {
+                return View("Login", new LoginModel() { Message = "Invalid username or password." });
+            }
+
+
             var calculationService = new TrafficCalculationService();
             var user = await calculationService.Login(model.Username, model.Password);
 
-            if (user != null) {
-                TempData["apiKey"] = user.apiKey;
+            if (user != null)
+            {
+                if (user.admin)
+                {
+                    HttpContext.Session.Set("admin", Encoding.ASCII.GetBytes("true"));
+                }
+
+                HttpContext.Session.Set("apiKey", Encoding.ASCII.GetBytes(user.apiKey));
                 return RedirectToAction("Home", "Traffic");
+            }
+            else
+            {
+                return View("Login", new LoginModel() { Message = "Login failed." } );
             }
             */
 
+
             if (model.Username != null)
             {
-                //TempData["apiKey"] = "abcdefg";
+                if (model.Username.Equals("admin")) {
+                    HttpContext.Session.Set("admin", Encoding.ASCII.GetBytes("true"));
+                }
+
                 HttpContext.Session.Set("apiKey", Encoding.ASCII.GetBytes("abcdefg"));
                 return RedirectToAction("Home", "Traffic");
             }

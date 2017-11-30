@@ -42,24 +42,29 @@ function getCoordinatesFromXml(xml) {
 
 function getRoute(startCoordinates, destinationCoordinates) {
     var dateValue = document.getElementById('dateTimeField').value;
-    alert(dateValue);
     var url = baseUrl + 'route/' + startCoordinates.latitude + '/' + startCoordinates.longitude + '/' + destinationCoordinates.latitude + '/' + destinationCoordinates.longitude + '/' + dateValue + '?apiKey=' + apiKey;
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
-            alert(this.responseText);
             setUpMap(this.responseXML);
         }
     }
-    xmlhttp.withCredentials = true;
     xmlhttp.open("GET", url, true);
     xmlhttp.send();
 }
 
 function setUpMap(xml) {
-    var nodeElements = xml.getElementsByTagName("nodes");
+    var nodeElements = xml.getElementsByTagName("node");
     if (nodeElements.length > 0) {
-        var mymap = L.map('mapid').setView([54.7747756, 11.5045997], 14);
+        var coordinates = [];
+        for (i = 0; i < nodeElements.length; i++) {
+            var latitude = nodeElements[i].getElementsByTagName("latitude")[0].childNodes[0].nodeValue;
+            var longitude = nodeElements[i].getElementsByTagName("longitude")[0].childNodes[0].nodeValue;
+
+            coordinates.push([latitude, longitude]);
+        }
+
+        var mymap = L.map('mapid').setView(coordinates[0], 13);
 
         L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
             attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
@@ -68,16 +73,7 @@ function setUpMap(xml) {
             accessToken: 'pk.eyJ1Ijoic2ltb25wZXRlcnNlbiIsImEiOiJjamFjdnllbDkxaTVqMndxZTU1c3NxaXZyIn0.SR6Kp-S_MnhPmayhHvX-Og'
         }).addTo(mymap);
 
-        for (i = 0; i < nodeElements.length; i++) {
-            var latitude = nodeElements[i].getElementsByTagName("latitude")[0].nodeValue;
-            var longitude = nodeElements[i].getElementsByTagName("longitude")[0]
-
-            L.circle([startCoordinates.latitude, startCoordinates.longitude], {
-                color: 'red',
-                fillOpacity: 1.0,
-                radius: 20
-            }).addTo(mymap);
-        }
+        L.polyline(coordinates, {color: 'red'}).addTo(mymap);
     } else {
         document.getElementById("mapid").innerHTML = "<p>Error: Couldn't determine route.</p>";
     }

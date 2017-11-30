@@ -1,5 +1,8 @@
 ﻿@{
     ViewData["Title"] = "About";
+    if ((bool)ViewData["admin"]) {
+        Layout = "_LayoutAdmin";
+    }
 }
 <h2>@ViewData["Title"]</h2>
 <h3>@ViewData["Message"]</h3>

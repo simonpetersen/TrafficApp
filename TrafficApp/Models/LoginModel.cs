@@ -15,5 +15,7 @@ namespace TrafficApp.Models
         [StringLength(100, MinimumLength = 8)]
         [Required]
         public string Password { get; set; }
+
+        public string Message { get; set; }
     }
 }

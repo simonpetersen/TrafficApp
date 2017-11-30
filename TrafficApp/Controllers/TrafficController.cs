@@ -5,8 +5,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using TrafficApp.Models;
-using TrafficApp.Integration;
-using JSM;
 using System.Text;
 using Microsoft.Extensions.Configuration;
 using System.IO;
@@ -17,12 +15,19 @@ namespace TrafficApp.Controllers
     {
         public IActionResult Home()
         {
-            byte[] apiKeyArray;
-            HttpContext.Session.TryGetValue("apiKey", out apiKeyArray);
-            ViewData["apiKey"] = Encoding.ASCII.GetString(apiKeyArray);
+            var apiKey = GetApiKey();
 
-            var configuration = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory())
-                                                          .AddJsonFile("appsettings.json").Build();
+
+            if (apiKey == null) 
+            {
+                return RedirectToAction("Login", "User");
+            }
+
+            ViewData["apiKey"] = apiKey;
+            ViewData["admin"] = IsAdmin();
+
+            var configurationBuilder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json");
+            var configuration = configurationBuilder.Build();
             ViewData["baseUrl"] = configuration["BaseUrl"];
 
             return View();
@@ -30,6 +35,8 @@ namespace TrafficApp.Controllers
 
         public IActionResult About()
         {
+            ViewData["admin"] = IsAdmin();
+
             return View();
         }
 
@@ -64,6 +71,19 @@ namespace TrafficApp.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        string GetApiKey()
+        {
+            byte[] apiKeyArray;
+            HttpContext.Session.TryGetValue("apiKey", out apiKeyArray);
+            return apiKeyArray != null ? Encoding.ASCII.GetString(apiKeyArray) : null;
+        }
+
+        bool IsAdmin() {
+            byte[] byteArray;
+            HttpContext.Session.TryGetValue("admin", out byteArray);
+            return byteArray != null ? true : false;
         }
     }
 }
