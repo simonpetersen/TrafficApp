@@ -1,0 +1,15 @@
+﻿<Properties StartupConfiguration="{F423196C-4193-447A-BDFE-0B9F549610A0}|Default">
+  <MonoDevelop.Ide.Workbench ActiveDocument="TrafficApp Status">
+    <Files>
+      <File FileName="wwwroot/css/site.css" Line="32" Column="17" />
+      <File FileName="TrafficApp Status" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.ItemProperties.TrafficApp PreferredExecutionTarget="MonoDevelop.Default" />
+  <MultiItemStartupConfigurations />
+</Properties>

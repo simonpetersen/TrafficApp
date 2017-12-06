@@ -7,8 +7,8 @@
   <ItemGroup>
     <PackageReference Include="System.Net.Http" Version="4.3.3" />
     <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.3" />
-    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.3" />
-    <PackageReference Include="Microsoft.AspNetCore.Session" Version="2.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Session" Version="2.0.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -17,7 +17,6 @@
 
   <ItemGroup>
     <Content Remove="Views\Home\Contact.cshtml" />
-    <Content Remove="Views\User\Login.cshtml" />
     <Content Remove="wwwroot\js\trafficCalculationService.js" />
   </ItemGroup>
   <ItemGroup>

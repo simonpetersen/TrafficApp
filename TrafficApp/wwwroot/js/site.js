@@ -12,41 +12,59 @@ function getCoordinatesFromAddress(startAddress, destinationAddress) {
     var urlDestination = nominatimBase + destinationAddress + '?format=xml';
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-            var startCoordinates = getCoordinatesFromXml(this.responseXML);
-            var xmlhttp = new XMLHttpRequest();
-            xmlhttp.onreadystatechange = function() {               
-                if (this.readyState == 4 && this.status == 200) {
-                    var destinationCoordinates = getCoordinatesFromXml(this.responseXML);
-                    getRoute(startCoordinates, destinationCoordinates);
+        if (this.readyState == 4) {
+            if (this.status == 200) {
+                var startCoordinates = getCoordinatesFromXml(startAddress, this.responseXML);
+                var xmlhttp = new XMLHttpRequest();
+                xmlhttp.onreadystatechange = function() {               
+                    if (this.readyState == 4) {
+                        if (this.status == 200) {
+                            var destinationCoordinates = getCoordinatesFromXml(destinationAddress, this.responseXML);
+                            getRoute(startCoordinates, destinationCoordinates);
+                        } else {
+                            showErrorMessage(this.responseText);
+                        }
+                    }
                 }
+                xmlhttp.open("GET", urlDestination, true);
+                xmlhttp.send();
+            } else {
+                showErrorMessage(this.responseText);
             }
-            xmlhttp.open("GET", urlDestination, true);
-            xmlhttp.send();
         }
     };
     xhttp.open("GET", urlStart, true);
     xhttp.send();
 }
 
-function getCoordinatesFromXml(xml) {
+function getCoordinatesFromXml(address, xml) {
     var placeElement = xml.getElementsByTagName("place");
     if (placeElement.length > 0) {
         for (i = 0; i < placeElement.length; i++) {
-            if (placeElement[i].getAttribute("osm_type") == 'node') {
+            if (placeElement[i].getAttribute("osm_type") == 'way') {
                 return { latitude: placeElement[i].getAttribute("lat"), longitude: placeElement[i].getAttribute("lon") };
             }
         }
     }
+
+    showErrorMessage(address + ' is not a valid address.');
 }
 
 function getRoute(startCoordinates, destinationCoordinates) {
+    if (startCoordinates == null || destinationCoordinates == null) {
+        return;
+    }
+
     var dateValue = document.getElementById('dateTimeField').value;
     var url = baseUrl + 'route/' + startCoordinates.latitude + '/' + startCoordinates.longitude + '/' + destinationCoordinates.latitude + '/' + destinationCoordinates.longitude + '/' + dateValue + '?apiKey=' + apiKey;
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
-            setUpMap(this.responseXML);
+            if (this.status == 200) {
+                setUpMap(this.responseXML);
+            } else {
+                showErrorMessage(this.responseText);
+            }
         }
     }
     xmlhttp.open("GET", url, true);
@@ -75,6 +93,10 @@ function setUpMap(xml) {
 
         L.polyline(coordinates, {color: 'red'}).addTo(mymap);
     } else {
-        document.getElementById("mapid").innerHTML = "<p>Error: Couldn't determine route.</p>";
+        showErrorMessage("Couldn't determine route.");
     }
+}
+
+function showErrorMessage(message) {
+    document.getElementById("mapid").innerHTML = "<p>Error: " + message + "</p>";
 }

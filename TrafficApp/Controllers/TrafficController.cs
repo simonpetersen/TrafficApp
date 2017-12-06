@@ -17,7 +17,6 @@ namespace TrafficApp.Controllers
         {
             var apiKey = GetApiKey();
 
-
             if (apiKey == null) 
             {
                 return RedirectToAction("Login", "User");
