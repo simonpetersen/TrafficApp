@@ -41,7 +41,7 @@ function getCoordinatesFromXml(address, xml) {
     var placeElement = xml.getElementsByTagName("place");
     if (placeElement.length > 0) {
         for (i = 0; i < placeElement.length; i++) {
-            if (placeElement[i].getAttribute("osm_type") == 'way') {
+            if (placeElement[i].getAttribute("osm_type") == 'node') {
                 return { latitude: placeElement[i].getAttribute("lat"), longitude: placeElement[i].getAttribute("lon") };
             }
         }
@@ -59,7 +59,7 @@ function getRoute(startCoordinates, destinationCoordinates) {
     var url = baseUrl + 'route/' + startCoordinates.latitude + '/' + startCoordinates.longitude + '/' + destinationCoordinates.latitude + '/' + destinationCoordinates.longitude + '/' + dateValue + '?apiKey=' + apiKey;
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
+        if (this.readyState == 4) {
             if (this.status == 200) {
                 setUpMap(this.responseXML);
             } else {
