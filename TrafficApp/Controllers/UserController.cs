@@ -58,12 +58,10 @@ namespace TrafficApp.Controllers
 
         public async Task<IActionResult> LoginAction(LoginModel model)
         {
-            /*
-            if (model.Username == null || model.Password == null || model.Username.Length < 4 || model.Password.Length < 8)
+            if (model.Username == null || model.Password == null || model.Username.Length < 4 || model.Password.Length < 6)
             {
                 return View("Login", new LoginModel() { Message = "Invalid username or password." });
             }
-
 
             var calculationService = new TrafficCalculationService();
             var user = await calculationService.Login(model.Username, model.Password);
@@ -82,20 +80,6 @@ namespace TrafficApp.Controllers
             {
                 return View("Login", new LoginModel() { Message = "Login failed." } );
             }
-            */
-
-
-            if (model.Username != null)
-            {
-                if (model.Username.Equals("admin")) {
-                    HttpContext.Session.Set("admin", Encoding.ASCII.GetBytes("true"));
-                }
-
-                HttpContext.Session.Set("apiKey", Encoding.ASCII.GetBytes("abcdefg"));
-                return RedirectToAction("Home", "Traffic");
-            }
-
-            return View("Login");
         }
 
         private string GetApiKey()

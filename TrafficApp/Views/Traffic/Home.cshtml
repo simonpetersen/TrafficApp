@@ -1,9 +1,10 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Route calculation";
     if ((bool)ViewData["admin"]) {
         Layout = "_LayoutAdmin";
     }
 }
+<h2>@ViewData["Title"]</h2>
 
 <script type="text/javascript">
 
@@ -13,7 +14,7 @@
 </script>
 
 <div class="row">
-	<h2>Route calculation</h2>
+
     <div class="col-xs-7 col-sm-6 col-md-3">
             <div class="form-group">
 			    <label>Start</label>
