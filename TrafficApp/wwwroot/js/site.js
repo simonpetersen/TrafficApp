@@ -3,7 +3,51 @@
 function calcRoute() {
     var startAddress = document.getElementById("startAddressField").value;
     var destinationAddress = document.getElementById("destinationAddressField").value;
-    getCoordinatesFromAddress(startAddress, destinationAddress);
+    var date = document.getElementById("dateTimeField").value;
+    if (date == '') {
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth() + 1; //January is 0!
+        var yyyy = today.getFullYear();
+
+        if (dd < 10) {
+            dd = '0' + dd
+        }
+
+        if (mm < 10) {
+            mm = '0' + mm
+        }
+
+        today = yyyy + "-" + mm + "-" + dd;
+        
+        document.getElementById("dateTimeField").value = today;
+    }
+    if (startAddress == "" || destinationAddress == "") {
+        showErrorMessage("You must enter a Start and Destination Address.");
+        return;
+    }
+    else {
+        getCoordinatesFromAddress(startAddress, destinationAddress);
+        var inputs = document.getElementById("inputs");
+        inputs.style.display = "none";
+        var loader = document.getElementById("loader");
+        loader.style.display = "block";
+        var btnNewRoute = document.getElementById("btnNewRoute");
+        btnNewRoute.style.display = "block";
+    }
+}
+
+function newRoute() {
+    var btnNewRoute = document.getElementById("btnNewRoute");
+    btnNewRoute.style.display = "none";
+    var inputs = document.getElementById("inputs");
+    inputs.style.display = "block";
+    var loader = document.getElementById("loader");
+    loader.style.display = "none";
+    var map = document.getElementById("mapid");
+    map.innerHTML = "";
+    map.style.display = "none";
+    
 }
 
 function getCoordinatesFromAddress(startAddress, destinationAddress) {
@@ -60,8 +104,15 @@ function getRoute(startCoordinates, destinationCoordinates) {
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = function() {
         if (this.readyState == 4) {
+            var loader = document.getElementById("loader");
+            loader.style.display = "none";
             if (this.status == 200) {
+                var map = document.getElementById("mapid");
+                map.style.display = "block";
+                map.style.width = "800px";
+                map.style.height = "500px";
                 setUpMap(this.responseXML);
+                
             } else {
                 showErrorMessage(this.responseText);
             }

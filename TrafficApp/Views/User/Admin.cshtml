@@ -33,7 +33,7 @@
                 @Html.EditorFor(model => model.CreateModel.Admin)
             </div>
         </div>
-        <input type="submit" value="Create User" id="btnCreate" />
+        <button class="btn btn-success" id="btnCreate">Create User <i class="fa fa-plus"></i></button>
         }
 		@if(@Model != null && @Model.CreateMessage != null) {
             <p>@Model.CreateMessage</p>
@@ -49,7 +49,7 @@
                 @Html.EditorFor(model => model.DeleteModel.Username)
             </div>
         </div>
-        <input type="submit" value="Delete User" id="btnDelete" />
+        <button id="btnDelete" class="btn btn-danger">Delete User <i class="fa fa-trash"></i></button>
         }
 		@if(@Model != null && @Model.DeleteMessage != null) {
             <p>@Model.DeleteMessage</p>
