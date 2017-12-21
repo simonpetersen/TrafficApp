@@ -37,6 +37,7 @@
 }
 
 #mapid {
+    margin-top: 25px;
     height: 500px;
     width: 800px;
 }
@@ -58,6 +59,11 @@
     height: 120px;
     -webkit-animation: spin 2s linear infinite;
     animation: spin 2s linear infinite;
+}
+
+.travelinfo {
+    font-weight: bold;
+    color: #00307f;
 }
 
 @keyframes spin {

@@ -11,35 +11,57 @@
 	var apiKey = '@(ViewData["apiKey"])';
     var baseUrl = '@(ViewData["baseUrl"])';   
 </script>        
-    <div class="row">
-        <div id="btnNewRoute" style="display:none">
-            <input type="button" class="btn btn-info" value="New Route" onclick="newRoute()" />
-        </div>
-        <div id="inputs" style="display:block">
-            <div class="col-xs-7 col-sm-6 col-md-3">
-                <div class="form-group">
-                    <label>Start</label>
-                    <div class="col-md-offset-0">
-                        <input class="text-box single-line" data-val="true" id="startAddressField" name="StartAddress" type="text" />
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>Destination</label>
-                    <div class="col-md-offset-0">
-                        <input class="text-box single-line" data-val="true" id="destinationAddressField" name="StartAddress" type="text" />
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>Date & Time</label>
-                    <div class="col-md-offset-0">
-                        <input class="text-box single-line" type="date" data-val="true" id="dateTimeField"/>
-                    </div>
-                </div>
-                <input type="button" class="btn btn-info" value="Find Route" id="btnFind" onclick="calcRoute()" />
+
+<div class="row">
+    <div class="col-xs-12">
+        <div id="travelInfo" style="display: none">
+            <div id="btnNewRoute">
+                <input type="button" class="btn btn-info" value="New Route" onclick="newRoute()" />
+            </div>
+
+            <div>
+                <text class="travelinfo">Estimated traveltime: </text>
+                <text id="travelTime"></text>
+            
+            
+                <text class="travelinfo"> Base traveltime: </text>
+                <text id="baseDuration"></text>
+            
+            
+                <text class="travelinfo">Travel Distance: </text>
+                <text id="distance"></text>
             </div>
         </div>
-        <div class="loader" id="loader" style="display:none"></div>
+    </div>
+</div>
+<div class="row">
+    <div class="loader" id="loader" style="display:none"></div>
+</div>
+<div class="row">
+    <div id="inputs" style="display:block">
         <div class="col-xs-7 col-sm-6 col-md-3">
-            <div id="mapid"></div>
+            <div class="form-group">
+                <label>Start</label>
+                <div class="col-md-offset-0">
+                    <input class="text-box single-line" data-val="true" id="startAddressField" name="StartAddress" type="text" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Destination</label>
+                <div class="col-md-offset-0">
+                    <input class="text-box single-line" data-val="true" id="destinationAddressField" name="StartAddress" type="text" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Date & Time</label>
+                <div class="col-md-offset-0">
+                    <input class="text-box single-line" type="date" data-val="true" id="dateTimeField"/>
+                </div>
+            </div>
+            <input type="button" class="btn btn-info" value="Find Route" id="btnFind" onclick="calcRoute()" />
         </div>
+    </div>
+    <div class="col-xs-7 col-sm-6 col-md-3">
+        <div id="mapid"></div>
+    </div>
 </div>

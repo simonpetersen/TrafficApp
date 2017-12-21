@@ -32,14 +32,14 @@ function calcRoute() {
         inputs.style.display = "none";
         var loader = document.getElementById("loader");
         loader.style.display = "block";
-        var btnNewRoute = document.getElementById("btnNewRoute");
-        btnNewRoute.style.display = "block";
+        var travelInfo = document.getElementById("travelInfo");
+        travelInfo.style.display = "block";
     }
 }
 
 function newRoute() {
-    var btnNewRoute = document.getElementById("btnNewRoute");
-    btnNewRoute.style.display = "none";
+    var travelInfo = document.getElementById("travelInfo");
+    travelInfo.style.display = "none";
     var inputs = document.getElementById("inputs");
     inputs.style.display = "block";
     var loader = document.getElementById("loader");
@@ -112,7 +112,7 @@ function getRoute(startCoordinates, destinationCoordinates) {
                 map.style.width = "800px";
                 map.style.height = "500px";
                 setUpMap(this.responseXML);
-                
+                setRouteInfoText(this.responseXML);
             } else {
                 showErrorMessage(this.responseText);
             }
@@ -146,6 +146,62 @@ function setUpMap(xml) {
     } else {
         showErrorMessage("Couldn't determine route.");
     }
+}
+
+function setRouteInfoText(xml) {
+    var duration = xml.getElementsByTagName("duration")[0].childNodes[0].nodeValue;
+    //var baseDuration = xml.getElementsByTagName("baseDuration")[0].childNodes[0].nodeValue;
+    //var distance = xml.getElementsByTagName("distance")[0].childNodes[0].nodeValue;
+
+
+    var timeText = document.getElementById("travelTime");
+    alert(duration);
+    alert(formatTimeText(duration));
+    timeText.innerHTML = formatTimeText(duration);
+
+    //var baseTimeText = document.getElementById("baseTime");
+    //baseTimeText.innerHTML = formatTimeText(baseDuration);
+
+    //var distanceText = document.getElementById("distance");
+    //distanceText.innerHTML = formatDistanceText(distance);
+
+}
+
+function formatTimeText(duration) {
+    var seconds = 0;
+    var minutes = 0;
+    var hours = 0;
+    if (duration > 60) {
+        if (duration / 60 > 60) {
+            hours = duration/3600;
+        }
+        minutes = Math.floor((duration - hours * 3600) / 60);
+    }
+    seconds = duration - hours * 3600 - minutes * 60;
+    if (hours < 10)
+        hours = '0' + hours;
+    if (minutes < 10)
+        minutes = '0' + minutes;
+    if (seconds < 10)
+        seconds = '0' + seconds;
+
+    return hours + ":" + minutes + ":" + seconds;
+    
+}
+
+function formatDistanceText(distance) {
+    var km = 0;
+    var m = 0;
+
+    if (distance > 1000) {
+        km = Math.floor(distance / 1000);
+    }
+    m = distance - km * 1000;
+
+    if (km == 0)
+        return m + 'm.';
+
+    return km + '.' + m + 'km.';
 }
 
 function showErrorMessage(message) {
