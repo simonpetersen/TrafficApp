@@ -33,6 +33,17 @@ namespace TrafficApp.Controllers
         {
             var calculationService = new TrafficCalculationService();
             var createModel = model.CreateModel;
+
+            if (createModel.Username == null || createModel.Username.Length < 4) 
+            {
+                return View("Admin", new UserModel() { CreateMessage = "Username needs to be 4 characters." }); 
+            }
+
+            if (createModel.Password == null || createModel.Password.Length < 6) 
+            {
+                return View("Admin", new UserModel() { CreateMessage = "Password needs to be 6 characters." });
+            }
+
             var adminString = createModel.Admin ? "true" : "false";
             var apiKey = GetApiKey();
             var result = await calculationService.CreateUser(createModel.Username, createModel.Password, createModel.Name, adminString, apiKey);
