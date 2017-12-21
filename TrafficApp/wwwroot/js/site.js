@@ -155,8 +155,6 @@ function setRouteInfoText(xml) {
 
 
     var timeText = document.getElementById("travelTime");
-    alert(duration);
-    alert(formatTimeText(duration));
     timeText.innerHTML = formatTimeText(duration);
 
     //var baseTimeText = document.getElementById("baseTime");
