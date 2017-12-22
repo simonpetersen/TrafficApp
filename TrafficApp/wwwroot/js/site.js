@@ -160,7 +160,7 @@ function setRouteInfoText(xml) {
     var baseTimeText = document.getElementById("baseTime");
     baseTimeText.innerHTML = formatTimeText(baseDuration);
 
-    var distanceText = document.getElementById("distance");
+    var distanceText = document.getElementById("distanceText");
     distanceText.innerHTML = formatDistanceText(distance);
 
 }
@@ -171,7 +171,7 @@ function formatTimeText(duration) {
     var hours = 0;
     if (duration > 60) {
         if (duration / 60 > 60) {
-            hours = duration/3600;
+            hours = Math.floor(duration/3600);
         }
         minutes = Math.floor((duration - hours * 3600) / 60);
     }
