@@ -47,6 +47,13 @@ function newRoute() {
     var map = document.getElementById("mapid");
     map.innerHTML = "";
     map.style.display = "none";
+    var travelTime1 = document.getElementById("travelTime");
+    var baseDuration1 = document.getElementById("baseDuration");
+    var distance1 = document.getElementById("distance");
+    travelTime1.innerHTML = "";
+    baseDuration1.innerHTML = "";
+    distance1.innerHTML = "";
+
     
 }
 
@@ -157,10 +164,10 @@ function setRouteInfoText(xml) {
     var timeText = document.getElementById("travelTime");
     timeText.innerHTML = formatTimeText(duration);
 
-    var baseTimeText = document.getElementById("baseTime");
+    var baseTimeText = document.getElementById("baseDuration");
     baseTimeText.innerHTML = formatTimeText(baseDuration);
 
-    var distanceText = document.getElementById("distanceText");
+    var distanceText = document.getElementById("distance");
     distanceText.innerHTML = formatDistanceText(distance);
 
 }
