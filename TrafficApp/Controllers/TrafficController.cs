@@ -54,7 +54,7 @@ namespace TrafficApp.Controllers
         bool IsAdmin() {
             byte[] byteArray;
             HttpContext.Session.TryGetValue("admin", out byteArray);
-            return byteArray != null;
+            return byteArray != null && Encoding.ASCII.GetString(byteArray).Equals(true.ToString());
         }
     }
 }

@@ -17,10 +17,7 @@ namespace TrafficApp.Controllers
 
         public IActionResult Admin() 
         {
-            byte[] byteArray;
-            HttpContext.Session.TryGetValue("admin", out byteArray);
-            var admin = byteArray != null ? true : false;
-
+            var admin = IsAdmin();
             if (!admin)
             {
                 return View("Login");
@@ -79,25 +76,26 @@ namespace TrafficApp.Controllers
 
             if (user != null)
             {
-                if (user.admin)
-                {
-                    HttpContext.Session.Set("admin", Encoding.ASCII.GetBytes("true"));
-                }
-
+                HttpContext.Session.Set("admin", Encoding.ASCII.GetBytes(user.admin.ToString()));
                 HttpContext.Session.Set("apiKey", Encoding.ASCII.GetBytes(user.apiKey));
                 return RedirectToAction("Home", "Traffic");
             }
-            else
-            {
-                return View("Login", new LoginModel() { Message = "Login failed." } );
-            }
+                
+            return View("Login", new LoginModel() { Message = "Login failed." } );
         }
 
-        private string GetApiKey()
+        string GetApiKey()
         {
             byte[] apiKeyArray;
             HttpContext.Session.TryGetValue("apiKey", out apiKeyArray);
             return Encoding.ASCII.GetString(apiKeyArray);
+        }
+
+        bool IsAdmin()
+        {
+            byte[] byteArray;
+            HttpContext.Session.TryGetValue("admin", out byteArray);
+            return byteArray != null && Encoding.ASCII.GetString(byteArray).Equals(true.ToString());
         }
     }
 }
