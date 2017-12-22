@@ -150,18 +150,18 @@ function setUpMap(xml) {
 
 function setRouteInfoText(xml) {
     var duration = xml.getElementsByTagName("duration")[0].childNodes[0].nodeValue;
-    //var baseDuration = xml.getElementsByTagName("baseDuration")[0].childNodes[0].nodeValue;
-    //var distance = xml.getElementsByTagName("distance")[0].childNodes[0].nodeValue;
+    var baseDuration = xml.getElementsByTagName("baseDuration")[0].childNodes[0].nodeValue;
+    var distance = xml.getElementsByTagName("distance")[0].childNodes[0].nodeValue;
 
 
     var timeText = document.getElementById("travelTime");
     timeText.innerHTML = formatTimeText(duration);
 
-    //var baseTimeText = document.getElementById("baseTime");
-    //baseTimeText.innerHTML = formatTimeText(baseDuration);
+    var baseTimeText = document.getElementById("baseTime");
+    baseTimeText.innerHTML = formatTimeText(baseDuration);
 
-    //var distanceText = document.getElementById("distance");
-    //distanceText.innerHTML = formatDistanceText(distance);
+    var distanceText = document.getElementById("distance");
+    distanceText.innerHTML = formatDistanceText(distance);
 
 }
 
