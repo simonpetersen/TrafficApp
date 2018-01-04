@@ -36,10 +36,20 @@
     background-color: #00307f;
 }
 
-#mapid {
-    margin-top: 25px;
-    width: 80em;
-    height: 50em;
+@media screen and (max-width: 767px) {
+    #mapid {
+        margin-top: 25px;
+        width: 80vw;
+        height: 50vh;
+    }
+}
+
+@media screen and (min-width: 768px) {
+    #mapid {
+        margin-top: 25px;
+        width: 50vw;
+        height: 50vh;
+    }
 }
 
 /* Hide/rearrange for smaller screens */

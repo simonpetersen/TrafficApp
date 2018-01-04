@@ -139,8 +139,8 @@ function getRoute(startCoordinates, destinationCoordinates) {
             if (this.status == 200) {
                 var map = document.getElementById("mapid");
                 map.style.display = "block";
-                map.style.width = "80em";
-                map.style.height = "50em";
+                //map.style.width = "80vw";
+                //map.style.height = "30vh";
                 setUpMap(this.responseXML);
                 setRouteInfoText(this.responseXML);
             } else {
