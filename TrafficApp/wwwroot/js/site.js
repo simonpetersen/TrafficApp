@@ -1,10 +1,28 @@
 ﻿// Write your JavaScript code.
 
+//Kort objekt er lavet global for at løse problem med 1 rute per refresh.
+var mymap;
+
 function calcRoute() {
+    //Address from start
     var startAddress = document.getElementById("startAddressField").value;
+    startAddress = startAddress.split(" ");
+    var startadd = "";
+    for (var i = 0; i < startAddress.length - 1; i++) {
+        startadd += startAddress[i] + " ";
+    }
+    startAddress = startadd;
+    //Address from Destination
     var destinationAddress = document.getElementById("destinationAddressField").value;
+    destinationAddress = destinationAddress.split(" ");
+    var destinationadd = "";
+    for (var i = 0; i < destinationAddress.length - 1; i++) {
+        destinationadd += destinationAddress[i] + " ";
+    }
+    destinationAddress = destinationadd;
+    //Check if date is set
     var date = document.getElementById("dateTimeField").value;
-    if (date == '') {
+    if (document.getElementById("dateTimeField").value === '') {
         var today = new Date();
         var dd = today.getDate();
         var mm = today.getMonth() + 1; //January is 0!
@@ -19,8 +37,13 @@ function calcRoute() {
         }
 
         today = yyyy + "-" + mm + "-" + dd;
-        
+
         document.getElementById("dateTimeField").value = today;
+    }
+    //Check weather data availability
+    if (!checkWeatherAvailability(document.getElementById("dateTimeField").value)) {
+        if (confirm("The chosen date is too far in the future. The route calculation will therefore not take the weather into account. Continue anyway?") == false)
+            return;
     }
     if (startAddress == "" || destinationAddress == "") {
         showErrorMessage("You must enter a Start and Destination Address.");
@@ -116,8 +139,8 @@ function getRoute(startCoordinates, destinationCoordinates) {
             if (this.status == 200) {
                 var map = document.getElementById("mapid");
                 map.style.display = "block";
-                map.style.width = "800px";
-                map.style.height = "500px";
+                map.style.width = "80em";
+                map.style.height = "50em";
                 setUpMap(this.responseXML);
                 setRouteInfoText(this.responseXML);
             } else {
@@ -140,7 +163,11 @@ function setUpMap(xml) {
             coordinates.push([latitude, longitude]);
         }
 
-        var mymap = L.map('mapid').setView(coordinates[0], 13);
+        // added check for existing mymap element. remove if present.
+        if (mymap)
+            mymap.remove();
+
+        mymap = L.map('mapid').setView(coordinates[0], 13);
 
         L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
             attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
@@ -159,10 +186,16 @@ function setRouteInfoText(xml) {
     var duration = xml.getElementsByTagName("duration")[0].childNodes[0].nodeValue;
     var baseDuration = xml.getElementsByTagName("baseDuration")[0].childNodes[0].nodeValue;
     var distance = xml.getElementsByTagName("distance")[0].childNodes[0].nodeValue;
-
+    var temperature = xml.getElementsByTagName("temperature")[0].childNodes[0].nodeValue;
+    var precipitation = xml.getElementsByTagName("precipitation")[0].childNodes[0].nodeValue;
+    var windSpeed = xml.getElementsByTagName("windSpeed")[0].childNodes[0].nodeValue;
+    
+    //start og slut
+    //var windDirection = xml.getElementsByTagName("windDirection")[0].childNodes[0].nodeValue;
+    //var impactfactor
 
     var timeText = document.getElementById("travelTime");
-    timeText.innerHTML = formatTimeText(duration);
+    timeText.innerHTML = formatTimeText(duration); 
 
     var baseTimeText = document.getElementById("baseDuration");
     baseTimeText.innerHTML = formatTimeText(baseDuration);
@@ -170,6 +203,18 @@ function setRouteInfoText(xml) {
     var distanceText = document.getElementById("distance");
     distanceText.innerHTML = formatDistanceText(distance);
 
+    var temperatureText = document.getElementById("temperature");
+    temperatureText.innerHTML = temperature;
+    
+    var precipitationText = document.getElementById("precipitation");
+    precipitationText.innerHTML = precipitation;
+    
+    var windSpeedText = document.getElementById("windspeed");
+    windSpeedText.innerHTML = windSpeed;
+    
+    var windDirectionText = document.getElementById("winddirection");
+    windDirectionText.innerHTML = windDirection; 
+    
 }
 
 function formatTimeText(duration) {
@@ -211,4 +256,21 @@ function formatDistanceText(distance) {
 
 function showErrorMessage(message) {
     document.getElementById("mapid").innerHTML = "<p>Error: " + message + "</p>";
+}
+
+function checkWeatherAvailability(requestedDate) {
+    //Set comparison date to 9 days and 12 hours in the future
+    var date = new Date();
+    date.setDate(date.getDate() + 9);
+    date.setHours(date.getHours() + 12);
+
+    //Transform HTML input to javascript date
+    requestedDate = requestedDate.split("-");
+    requestedDate = new Date(requestedDate[0], requestedDate[1] - 1, requestedDate[2]);
+
+    if (requestedDate <= date) {
+        return true;
+    }
+    else
+        return false;
 }

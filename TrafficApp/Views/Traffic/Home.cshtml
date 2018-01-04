@@ -20,16 +20,58 @@
             </div>
 
             <div>
-                <text class="travelinfo">Estimated traveltime: </text>
-                <text id="travelTime"></text>
-            
-            
-                <text class="travelinfo"> Base traveltime: </text>
-                <text id="baseDuration"></text>
-            
-            
-                <text class="travelinfo">Travel Distance: </text>
-                <text id="distance"></text>
+                <table class="col-sm-6" style="overflow-x:auto;">
+                    <tr>
+                        <td>
+                            <text class="travelinfo">Estimated traveltime:</text>
+                        </td>
+                        <td>
+                            <text id="travelTime"></text>
+                        </td>
+                        <td>
+                            <text class="travelinfo"> Base traveltime:</text>
+                        </td>
+                        <td>
+                            <text id="baseDuration"></text>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <text class="travelinfo">Travel Distance:</text>
+                        </td>
+                        <td>
+                            <text id="distance"></text>
+                        </td>
+                        <td>
+                            <text class="travelinfo">Temperature:</text>
+                        </td>
+                        <td>
+                            <text id="temperature"></text>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <text class="travelinfo">Wind Speed:</text>
+                        </td>
+                        <td>
+                            <text id="windspeed"></text>
+                        </td>
+                        <td>
+                            <text class="travelinfo">Wind Direction:</text>
+                        </td>
+                        <td>
+                            <text id="winddirection"></text>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <text class="travelinfo">precipitation:</text>
+                        </td>
+                        <td>
+                            <text id="precipitation"></text>
+                        </td>
+                    </tr>
+                </table>
             </div>
         </div>
     </div>
@@ -65,3 +107,6 @@
         <div id="mapid"></div>
     </div>
 </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/2.4.1/core.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.3/fetch.min.js"></script>
+<script src="https://dawa.aws.dk/js/autocomplete/dawa-autocomplete2.min.js"></script>
