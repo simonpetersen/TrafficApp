@@ -54,6 +54,26 @@
 		@if(@Model != null && @Model.DeleteMessage != null) {
             <p>@Model.DeleteMessage</p>
 		}
+        <h3>Change Password</h3>
+        @using (Html.BeginForm("ChangePassword", "User"))
+        {
+            <div class="form-group">
+                @Html.LabelFor(model => model.ChangePasswordModel.Username, "Username", new { @class = "control-label col-md-0"})
+                <div class="col-md-offset-0">
+                    @Html.EditorFor(model => model.ChangePasswordModel.Username)
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.ChangePasswordModel.Password, "Password", new { @class = "control-label col-md-0" })
+                <div class="col-md-offset-0">
+                    @Html.PasswordFor(model => model.ChangePasswordModel.Password)
+                </div>
+            </div>
+            <button id="btnChangePassword" class="btn btn-info"> Change Password</button>
+        }
+        @if(Model != null && @Model.ChangePasswordMessage != null){
+            <p>@Model.ChangePasswordMessage</p>
+        }
     </div>
 </div>
 

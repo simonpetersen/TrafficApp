@@ -112,6 +112,34 @@ namespace TrafficApp.Integration
             return "Deletion failed.";
         }
 
+        public async Task<string> ChangePassword(string Username, string ApiKey, string Password)
+        {
+            var builder = new ConfigurationBuilder()
+               .SetBasePath(Directory.GetCurrentDirectory())
+           .AddJsonFile("appsettings.json");
+
+            Configuration = builder.Build();
+
+            string baseUrl = Configuration["BaseUrl"] + "user/changepass/";
+
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(baseUrl);
+                client.DefaultRequestHeaders.Clear();
+
+                var hashPassword = ComputeHash(Password);
+                client.DefaultRequestHeaders.Add("password", hashPassword);
+
+                HttpResponseMessage Response = await client.PostAsync(Username + "?apiKey=" + ApiKey, new StringContent(Password));
+                if (Response.IsSuccessStatusCode)
+                {
+                    return "Password successfully changed.";
+                }
+            }
+
+            return "Failed to change password.";
+        }
+
         string ComputeHash(string value) {
             var hashBytes = new SHA256Managed().ComputeHash(Encoding.UTF8.GetBytes(value));
             var hashString = string.Empty;

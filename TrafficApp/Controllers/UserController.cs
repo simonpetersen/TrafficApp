@@ -64,6 +64,28 @@ namespace TrafficApp.Controllers
             return View("Admin", new UserModel() { DeleteMessage = result });
         }
 
+        public async Task<IActionResult> ChangePassword(UserModel model)
+        {
+            var calculationService = new TrafficCalculationService();
+            var changePasswordModel = model.ChangePasswordModel;
+
+            if (changePasswordModel.Username.Equals("admin"))
+            {
+                return View("Admin", new UserModel() { ChangePasswordMessage = "Password for the admin cannot be changed" });
+            }
+
+            if (changePasswordModel.Password == null || changePasswordModel.Password.Length < 6)
+            {
+                return View("Admin", new UserModel() { CreateMessage = "Password needs to be 6 characters." });
+            }
+
+
+            var apiKey = GetApiKey();
+            var result = await calculationService.ChangePassword(changePasswordModel.Username, apiKey, changePasswordModel.Password);
+
+            return View("Admin", new UserModel() { ChangePasswordMessage = result });
+        }
+
         public async Task<IActionResult> LoginAction(LoginModel model)
         {
             if (model.Username == null || model.Password == null || model.Username.Length < 4 || model.Password.Length < 6)
@@ -96,6 +118,13 @@ namespace TrafficApp.Controllers
             byte[] byteArray;
             HttpContext.Session.TryGetValue("admin", out byteArray);
             return byteArray != null && Encoding.ASCII.GetString(byteArray).Equals(true.ToString());
+        }
+
+        public ActionResult Logout()
+        {
+            HttpContext.Session.Clear();
+            //return View("Login", new LoginModel());
+            return RedirectToAction("Login", "User");
         }
     }
 }
